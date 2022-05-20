@@ -26,12 +26,10 @@ public class Biblio implements Serializable {
 
 	}
 
-	public void ajout(String titre, String auteur, int annee, String genre, int nbcopie, int dispo) {
+	public void ajout(Document newDocument) {
 		if (documents.size() < MAXDOCUMENTS) { // Pas de generation si on est plein!
 			String code = CodeGenerator.generateCode();
-			Document newDocument = new Document(auteur, titre, annee, genre, nbcopie);
 			newDocument.setCode(code);
-			newDocument.setNbCopieDispo(dispo);
 			documents.add(newDocument);
 			nbDocuments++;
 		}
