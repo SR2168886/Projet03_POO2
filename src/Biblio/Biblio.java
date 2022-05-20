@@ -18,83 +18,76 @@ import ressourceExterne.CodeGenerator;
 public class Biblio implements Serializable {
 
 	int MAXLIVRE = 500;
-	Livre[] livres= new Livre[MAXLIVRE];
+	Livre[] documents = new Livre[MAXLIVRE];
 	int nbLivre;
-
 
 	public Biblio() {
 
-
 	}
 
-
-	public void ajout(String titre,String auteur,int annee,String genre, int nbcopie, int dispo) {
-
-
+	public void ajout(String titre, String auteur, int annee, String genre, int nbcopie, int dispo) {
 
 		String code = CodeGenerator.generateCode();
-		Document[nbLivre]= new Document(auteur,titre,annee,genre,nbcopie);
+		documents[nbLivre] = new Document(auteur, titre, annee, genre, nbcopie);
 
-
-		Document[nbLivre].setCode(code);
-		Document[nbLivre].setNbCopieDispo(dispo);
+		documents[nbLivre].setCode(code);
+		documents[nbLivre].setNbCopieDispo(dispo);
 		nbLivre++;
 	}
 
-
-	public void pret(String code) {              //emprunte un livre et réduit le nombre de livre dispo
+	public void pret(String code) { // emprunte un livre et rï¿½duit le nombre de livre dispo
 		int pos = rechercheC(code);
-		if (livres[pos].getNbCopieDispo()-1>=0) {
-			livres[pos].setNbCopieDispo(livres[pos].getNbCopieDispo()-1);
+		if ((documents[pos].getNbCopieDispo() - 1) >= 0) {
+			documents[pos].setNbCopieDispo(documents[pos].getNbCopieDispo() - 1);
 		} else {
-			JOptionPane.showMessageDialog(null, "emprunt a échoué");
+			JOptionPane.showMessageDialog(null, "emprunt a ï¿½chouï¿½");
 		}
 	}
 
-	public void retour(String code) {           //retourne le livre emprunter et augmente le livre de dipo
+	public void retour(String code) { // retourne le livre emprunter et augmente le livre de dipo
 		int pos = rechercheC(code);
-		if (livres[pos].getNbCopieDispo()<=livres[pos].getNbCopie()) {
-			livres[pos].setNbCopieDispo(livres[pos].getNbCopieDispo()+1);
+		if (documents[pos].getNbCopieDispo() <= documents[pos].getNbCopie()) {
+			documents[pos].setNbCopieDispo(documents[pos].getNbCopieDispo() + 1);
 		} else {
-			JOptionPane.showMessageDialog(null, "retour a échoué");
+			JOptionPane.showMessageDialog(null, "retour a ï¿½chouï¿½");
 		}
 	}
 
 	@Override
-	public String toString() {      //affiche la liste de livre de la bibliothèque
-		String message="";
-		Arrays.sort(livres,0,nbLivre);
-		for(int i=0; i<livres.length; i++) {
-			if(livres[i]!=null) {
-				message += livres[i].toString()+"\n";
+	public String toString() { // affiche la liste de livre de la bibliothï¿½que
+		String message = "";
+		Arrays.sort(documents, 0, nbLivre);
+		for (int i = 0; i < documents.length; i++) {
+			if (documents[i] != null) {
+				message += documents[i].toString() + "\n";
 			}
 		}
 		return message;
 
 	}
 
-	public void supression(String code) {        //suprime un livre du répertoire
+	public void supression(String code) { // suprime un livre du rï¿½pertoire
 		int pos = rechercheC(code);
-		for(int i=pos; i< Document.length; i++) {
-			if(Docuement [i]!=null) {
-				livres[i] = livres[i+1];
+		for (int i = pos; i < documents.length; i++) {
+			if (documents[i] != null) {
+				documents[i] = documents[i + 1];
 			}
 		}
 		nbLivre--;
 
 	}
 
-	public Livre obtention(int pos) {           //obtien le livre basée sur la position trouvée
-		Livre temp =livres[pos];
+	public Livre obtention(int pos) { // obtien le livre basï¿½e sur la position trouvï¿½e
+		Livre temp = documents[pos];
 		return temp;
 	}
 
-	public int rechercheC(String code) {   //effectue uner recherche du livre basée sur le code
-		int position=0;
-		for(int i=0; i<livres.length;i++) {
-			if (livres[i]!=null) {
-				livres[i].getCode();
-				if (code.equals(livres[i].getCode())) {
+	public int rechercheC(String code) { // effectue uner recherche du livre basï¿½e sur le code
+		int position = 0;
+		for (int i = 0; i < documents.length; i++) {
+			if (documents[i] != null) {
+				documents[i].getCode();
+				if (code.equals(documents[i].getCode())) {
 					position = i;
 					return position;
 				}
@@ -104,11 +97,12 @@ public class Biblio implements Serializable {
 		}
 		return position;
 	}
-	public int rechercheN(String nom) {     //effectue une recherche du livre basée sur le nom
-		int position=0;
-		for(int i=0; i<livres.length;i++) {
-			if (livres[i]!=null) {
-				String temp = livres[i].getTitre();
+
+	public int rechercheN(String nom) { // effectue une recherche du livre basï¿½e sur le nom
+		int position = 0;
+		for (int i = 0; i < documents.length; i++) {
+			if (documents[i] != null) {
+				String temp = documents[i].getTitre();
 
 				if (nom.equals(temp)) {
 					position = i;
@@ -120,15 +114,15 @@ public class Biblio implements Serializable {
 	}
 
 	public void chargement() {
-		String path= "./MesRessource/Livre.txt";
+		String path = "./MesRessource/Livre.txt";
 		String ligne = null;
 
 		int nb = 0; // compteur de personnes
 		try // try with
 		(FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr);) {
 
-			while (br.ready() && nb < livres.length) {
-				//lire une ligne
+			while (br.ready() && (nb < documents.length)) {
+				// lire une ligne
 				ligne = br.readLine();
 
 				// extraire les donnees
@@ -137,19 +131,18 @@ public class Biblio implements Serializable {
 				String titre = strk.nextToken();
 				String auteur = strk.nextToken();
 				int nbCopie = Integer.parseInt(strk.nextToken());
-				int nbCopieDispo =  Integer.parseInt(strk.nextToken());
+				int nbCopieDispo = Integer.parseInt(strk.nextToken());
 				int annee = Integer.parseInt(strk.nextToken());
-				String genre=strk.nextToken();
-
+				String genre = strk.nextToken();
 
 				// instancier Livre
-				//Livre p = new Livre (auteur,titre,annee, genre, nbCopie);
-				//p.setNbCopieDispo(nbcopiedispo);
+				// Livre p = new Livre (auteur,titre,annee, genre, nbCopie);
+				// p.setNbCopieDispo(nbcopiedispo);
 
 				// l'ajouter au tableau
-				//livres[nb] = p;
-				//nb=Livre.g;
-				ajout(titre,auteur,annee,genre,nbCopie, nbCopieDispo);
+				// livres[nb] = p;
+				// nb=Livre.g;
+				ajout(titre, auteur, annee, genre, nbCopie, nbCopieDispo);
 
 			}
 
@@ -166,18 +159,13 @@ public class Biblio implements Serializable {
 	}
 
 	public void Sauvegarde() throws IOException {
-		String path= "./MesRessource/Livre.json";
-		try(Writer out = new FileWriter(path);){
+		String path = "./MesRessource/Livre.json";
+		try (Writer out = new FileWriter(path);) {
 
-			//	Gson gs = new GsonBuilder().setPrettyPrinting().create();
+			// Gson gs = new GsonBuilder().setPrettyPrinting().create();
 
-			//	gs.toJson(livres, out);
+			// gs.toJson(livres, out);
 		}
 	}
 
 }
-
-
-
-
-
