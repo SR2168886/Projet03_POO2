@@ -1,8 +1,8 @@
 package ressourceExterne;
 
-
-
-// Classe utilitaire pour generer le code du livre a partir de ses informations
+/** Classe utilitaire pour generer le code d'un document
+ *	a partir de ses informations
+ */
 public class CodeGenerator {
 
 	public static char[] HEXADECIMAL = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
@@ -11,6 +11,9 @@ public class CodeGenerator {
 	public static String generateCode(String titre, String auteur, int annee, int longueurTitre, int longueurAnnee) {
 		if (longueurTitre <= 0) {
 			longueurTitre = 1;
+		}
+		if (longueurTitre <= 4) {
+			longueurTitre = 4;
 		}
 		if (longueurAnnee <= 0) {
 			longueurAnnee = 1;
@@ -26,19 +29,23 @@ public class CodeGenerator {
 		return returnCode;
 	}
 
-	public static String generateCodeLetter(String auteur) {
+	public static String generateCodeLetter(String chaine) {
 		String returnCode = "";
-		String AuteurNom[] = auteur.split(" ");
+		String items[] = chaine.split("[ ]");
+		if(chaine != null) {
+			if (items.length >= 2 )
+			{ // Premiere Partie du Code = Premiere lettre Nom Prenom Auteur
+				returnCode = items[0].substring(0, 1).toUpperCase(); // IE : Patrick Senecal = PS-*****-**
+				returnCode += items[1].substring(0, 1).toUpperCase();
+			} else if (chaine.length() >= 2 && !Character.isDigit(chaine.charAt(0)))
+			{ // Si 1 item Code = 2 premieres lettres du nom
+				returnCode = chaine.substring(0, 2).toUpperCase(); // IE : Corneille = CO-*****-**
+			} else  { //
+				// Si 1 item commencant par un chiffre : les 2 caracteres à partir de la position 1
+				return chaine.substring(2,4);
+			}
 
-		if (AuteurNom.length >= 2 && AuteurNom != null) { // Premiere Partie du Code = Premiere lettre Nom Prenom Auteur
-			returnCode = AuteurNom[0].substring(0, 1).toUpperCase(); // IE : Patrick Senecal = PS-*****-**
-			returnCode += AuteurNom[1].substring(0, 1).toUpperCase();
-		} else if (auteur.length() >= 2) { // Si Pas 2 Noms Code = 2 premieres lettres du nom
-			returnCode = auteur.substring(0, 2).toUpperCase(); // IE : Corneille = CO-*****-**
-		} else if (auteur.length() == 1) {
-			returnCode += auteur.toUpperCase() + "0";
-		}
-		else {
+		} else {
 			returnCode += "XX"; // Sinon Code = XX-*****-**
 		}
 
@@ -51,33 +58,29 @@ public class CodeGenerator {
 		int[] nbReduce = new int[longCode]; // Bucket pour le "Hashage"
 		String retourAdd = ""; // String temporaire pour transformer le titre en chiffre
 
-		if (titre.length() >= longCode) { // Si la String est >= a la longeur du code
+		if (titre.length() >= longCode) { // Si longueur titre est >= a la longeur du code
 
-			for (int i = 0; i < nomTrans.length; i++)
-			{
-				nbReduce[i % nbReduce.length] += nomTrans[i]; // du titre a leur "Bucket" respective
+			for (int i = 0; i < nomTrans.length; i++) {
+				nbReduce[i % nbReduce.length] += nomTrans[i]; // du titre a leur "Bucket" respectif
 			}
 
-			for (int i = nomTrans.length - 1; i >= 0; i--)
-			{
+			for (int i = nomTrans.length - 1; i >= 0; i--) {
 				nbReduce[i % nbReduce.length] += nomTrans[i]; // les "Buckets"
 			}
 
-			for (int i = 0; i < nbReduce.length; i++)
-			{
+			for (int i = 0; i < nbReduce.length; i++) {
 				retourAdd += HEXADECIMAL[reduceInt(nbReduce[i])]; // Ajoute la valeur "hashe" au code en HEX ( base 16 )
 			}
 
 			returnCode += retourAdd;
-		} else { // Si la String est < la longeur du code
-			// ** Beaucoup de pattern quand String < que hash sortant **
+		} else { // Si la longueur titre est < la longueur du code
+
 			for (int i = 0; i < longCode - 1; i++) {
 				nbReduce[i % nomTrans.length] += nomTrans[i % nomTrans.length];
 			}
 
-			for (int i = longCode - 1; i >= 0; i--)
-			{
-				nbReduce[(nomTrans[i % nomTrans.length]) % nbReduce.length] += nomTrans[i % nomTrans.length]; // les
+			for (int i = longCode - 1; i >= 0; i--) {
+				nbReduce[nomTrans[i % nomTrans.length] % nbReduce.length] += nomTrans[i % nomTrans.length]; // les
 				// "Buckets"
 			}
 
@@ -98,7 +101,7 @@ public class CodeGenerator {
 			return value;
 		} else {
 			while (temp >= HEXADECIMAL.length) {
-				temp = (temp / 10) + temp % 10;
+				temp = temp / 10 + temp % 10;
 			}
 		}
 
