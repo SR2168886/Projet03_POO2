@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -18,7 +19,7 @@ import ressourceExterne.CodeGenerator;
 public class Biblio implements Serializable {
 
 	int MAXLIVRE = 500;
-	Livre[] documents = new Livre[MAXLIVRE];
+	ArrayList documents = new ArrayList();
 	int nbLivre;
 
 	public Biblio() {
