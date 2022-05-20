@@ -1,6 +1,5 @@
 package Biblio;
 
-public class BandeDessinée extends Volume {
-
+public class BandeDessinee extends Volume {
 
 }
