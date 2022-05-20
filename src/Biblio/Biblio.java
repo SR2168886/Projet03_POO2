@@ -16,11 +16,16 @@ import ressourceExterne.CodeGenerator;
 public class Biblio implements Serializable {
 
 	int MAXDOCUMENTS = 500;
+	String nom;
 	ArrayList documents = new ArrayList();
 	int nbDocuments;
 
 	public Biblio() {
+		setNom("Bibliotheque Sans Nom");
+	}
 
+	public Biblio(String nom) {
+		setNom(nom);
 	}
 
 	public void ajout(Document newDocument) {
@@ -85,6 +90,38 @@ public class Biblio implements Serializable {
 
 			// gs.toJson(livres, out);
 		}
+	}
+
+	public int getMAXDOCUMENTS() {
+		return MAXDOCUMENTS;
+	}
+
+	public void setMAXDOCUMENTS(int mAXDOCUMENTS) {
+		MAXDOCUMENTS = mAXDOCUMENTS;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public ArrayList getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(ArrayList documents) {
+		this.documents = documents;
+	}
+
+	public int getNbDocuments() {
+		return nbDocuments;
+	}
+
+	public void setNbDocuments(int nbDocuments) {
+		this.nbDocuments = nbDocuments;
 	}
 
 }
