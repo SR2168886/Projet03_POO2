@@ -6,6 +6,10 @@ public class Livre extends Volume {
 
 	private String genre;
 
+	private int nbCopie;
+
+	private int nbCopieDispo;
+
 	public Livre() {
 
 	}

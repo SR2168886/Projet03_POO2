@@ -1,20 +1,16 @@
 package Biblio;
 
 public class Document {
-	private  String code;
+	private String code;
 
 	private String titre;
 
-	private int nbCopie;
-
-	private int nbCopieDispo;
-
-	public Document(){
+	public Document() {
 
 	}
 
-	public void Document(String titre,int nbCopie) {
-
+	public Document(String titre) {
+		setTitre(titre);
 	}
 
 	public String getCode() {
