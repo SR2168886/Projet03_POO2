@@ -45,7 +45,7 @@ public class Biblio implements Serializable {
 		try // try with
 		(FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr);) {
 
-			while (br.ready() && (nb < documents.size)) {
+			while (br.ready() && (nb < documents.size())) {
 				// lire une ligne
 				ligne = br.readLine();
 
