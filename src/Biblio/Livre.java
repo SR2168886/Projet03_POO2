@@ -40,6 +40,22 @@ public class Livre extends Volume {
 		this.annee = annee;
 	}
 
+	public int getNbCopie() {
+		return nbCopie;
+	}
+
+	public void setNbCopie(int nbCopie) {
+		this.nbCopie = nbCopie;
+	}
+
+	public int getNbCopieDispo() {
+		return nbCopieDispo;
+	}
+
+	public void setNbCopieDispo(int nbCopieDispo) {
+		this.nbCopieDispo = nbCopieDispo;
+	}
+
 	@Override
 	public String toString() {
 		String message = "Livre" + "\t" + getCode() + "\t" + getTitre() + "\t" + getAuteur() + "\t" + genre + "\t"

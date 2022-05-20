@@ -29,22 +29,6 @@ public class Document {
 		this.titre = titre;
 	}
 
-	public int getNbCopie() {
-		return nbCopie;
-	}
-
-	public int getNbCopieDispo() {
-		return nbCopieDispo;
-	}
-
-	public void setNbCopie(int nbCopie) {
-		this.nbCopie = nbCopie;
-	}
-
-	public void setNbCopieDispo(int nbCopieDispo) {
-		this.nbCopieDispo = nbCopieDispo;
-	}
-
 	@Override
 	public String toString() {
 
