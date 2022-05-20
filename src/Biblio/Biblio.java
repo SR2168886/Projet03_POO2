@@ -28,14 +28,14 @@ public class Biblio implements Serializable {
 
 	public void ajout(Document newDocument) {
 		if (documents.size() < MAXDOCUMENTS) { // Pas de generation si on est plein!
-			String code = CodeGenerator.generateCode();
+			String code = CodeGenerator.generateCode(newDocument.getTitre());
 			newDocument.setCode(code);
 			documents.add(newDocument);
 			nbDocuments++;
 		}
 	}
 
-	public void pret(String code) { // emprunte un livre et r�duit le nombre de livre dispo
+	public void pret(String code) { // emprunte un livre et reduit le nombre de livre dispo
 		int pos = rechercheC(code);
 		if ((documents[pos].getNbCopieDispo() - 1) >= 0) {
 			documents[pos].setNbCopieDispo(documents[pos].getNbCopieDispo() - 1);
@@ -121,7 +121,7 @@ public class Biblio implements Serializable {
 		try // try with
 		(FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr);) {
 
-			while (br.ready() && (nb < documents.length)) {
+			while (br.ready() && (nb < documents.size)) {
 				// lire une ligne
 				ligne = br.readLine();
 

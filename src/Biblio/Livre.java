@@ -11,7 +11,12 @@ public class Livre extends Volume {
 	private int nbCopieDispo;
 
 	public Livre() {
-
+		setAuteur("Aucun Auteur");
+		setTitre("Aucun Titre");
+		setAnnee(0);
+		setNbCopie(0);
+		setGenre("Aucun Genre");
+		setNbCopieDispo(0);
 	}
 
 	public Livre(String auteur, String titre, int annee, String genre, int nbcopie) {
@@ -21,7 +26,6 @@ public class Livre extends Volume {
 		setNbCopie(nbcopie);
 		setGenre(genre);
 		setNbCopieDispo(nbcopie);
-
 	}
 
 	public String getGenre() {
