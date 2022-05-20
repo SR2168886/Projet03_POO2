@@ -1,3 +1,4 @@
+package test;
 /*
  * Fichier : Test.java
  * Auteur : Sébastien
