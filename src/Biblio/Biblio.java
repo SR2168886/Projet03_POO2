@@ -18,22 +18,23 @@ import ressourceExterne.CodeGenerator;
 
 public class Biblio implements Serializable {
 
-	int MAXLIVRE = 500;
+	int MAXDOCUMENTS = 500;
 	ArrayList documents = new ArrayList();
-	int nbLivre;
+	int nbDocuments;
 
 	public Biblio() {
 
 	}
 
 	public void ajout(String titre, String auteur, int annee, String genre, int nbcopie, int dispo) {
-
-		String code = CodeGenerator.generateCode();
-		documents[nbLivre] = new Document(auteur, titre, annee, genre, nbcopie);
-
-		documents[nbLivre].setCode(code);
-		documents[nbLivre].setNbCopieDispo(dispo);
-		nbLivre++;
+		if (documents.size() < MAXDOCUMENTS) { // Pas de generation si on est plein!
+			String code = CodeGenerator.generateCode();
+			Document newDocument = new Document(auteur, titre, annee, genre, nbcopie);
+			newDocument.setCode(code);
+			newDocument.setNbCopieDispo(dispo);
+			documents.add(newDocument);
+			nbDocuments++;
+		}
 	}
 
 	public void pret(String code) { // emprunte un livre et r�duit le nombre de livre dispo
