@@ -32,7 +32,7 @@ public class Document {
 	@Override
 	public String toString() {
 
-		return "";
+		return code + ",\t" + titre;
 	}
 
 }
