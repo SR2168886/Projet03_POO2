@@ -1,12 +1,12 @@
 package Biblio;
 
 public class Document {
-	private String code;
+	protected String code;
 
-	private String titre;
+	protected String titre;
 
 	public Document() {
-
+		setTitre("Aucun Titre");
 	}
 
 	public Document(String titre) {
@@ -31,8 +31,8 @@ public class Document {
 
 	@Override
 	public String toString() {
-
-		return code + ",\t" + titre;
+		String affichage = code + ",\t" + titre;
+		return affichage;
 	}
 
 }

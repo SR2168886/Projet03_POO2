@@ -1,23 +1,27 @@
 package Biblio;
 
 public class Volume extends Document {
-	private String auteur;
+	protected String auteur;
 
 	public Volume() {
 
 	}
-	public Volume (String titre, String auteur) {
 
+	public Volume(String titre, String auteur) {
+		setTitre(titre);
+		setAuteur(auteur);
 	}
+
 	public String getAuteur() {
 		return auteur;
 	}
+
 	public void setAuteur(String auteur) {
 		this.auteur = auteur;
 	}
 
 	@Override
 	public String toString() {
-		return "";
+		return code + ",\t" + titre + ",\t" + auteur;
 	}
 }
