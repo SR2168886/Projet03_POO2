@@ -4,7 +4,8 @@ public class Volume extends Document {
 	protected String auteur;
 
 	public Volume() {
-
+		setTitre("Aucun Titre");
+		setAuteur("Aucun Auteur");
 	}
 
 	public Volume(String titre, String auteur) {
