@@ -13,9 +13,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import ressourceExterne.CodeGenerator;
 
 public class Biblio implements Serializable {
@@ -172,9 +169,9 @@ public class Biblio implements Serializable {
 		String path= "./MesRessource/Livre.json";
 		try(Writer out = new FileWriter(path);){
 
-			Gson gs = new GsonBuilder().setPrettyPrinting().create();
+			//	Gson gs = new GsonBuilder().setPrettyPrinting().create();
 
-			gs.toJson(livres, out);
+			//	gs.toJson(livres, out);
 		}
 	}
 
