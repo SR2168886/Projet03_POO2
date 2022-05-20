@@ -8,11 +8,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-
-import javax.swing.JOptionPane;
 
 import ressourceExterne.CodeGenerator;
 
@@ -33,84 +30,6 @@ public class Biblio implements Serializable {
 			documents.add(newDocument);
 			nbDocuments++;
 		}
-	}
-
-	public void pret(String code) { // emprunte un livre et reduit le nombre de livre dispo
-		int pos = rechercheC(code);
-		if ((documents[pos].getNbCopieDispo() - 1) >= 0) {
-			documents[pos].setNbCopieDispo(documents[pos].getNbCopieDispo() - 1);
-		} else {
-			JOptionPane.showMessageDialog(null, "emprunt a �chou�");
-		}
-	}
-
-	public void retour(String code) { // retourne le livre emprunter et augmente le livre de dipo
-		int pos = rechercheC(code);
-		if (documents[pos].getNbCopieDispo() <= documents[pos].getNbCopie()) {
-			documents[pos].setNbCopieDispo(documents[pos].getNbCopieDispo() + 1);
-		} else {
-			JOptionPane.showMessageDialog(null, "retour a �chou�");
-		}
-	}
-
-	@Override
-	public String toString() { // affiche la liste de livre de la biblioth�que
-		String message = "";
-		Arrays.sort(documents, 0, nbLivre);
-		for (int i = 0; i < documents.length; i++) {
-			if (documents[i] != null) {
-				message += documents[i].toString() + "\n";
-			}
-		}
-		return message;
-
-	}
-
-	public void supression(String code) { // suprime un livre du r�pertoire
-		int pos = rechercheC(code);
-		for (int i = pos; i < documents.length; i++) {
-			if (documents[i] != null) {
-				documents[i] = documents[i + 1];
-			}
-		}
-		nbLivre--;
-
-	}
-
-	public Livre obtention(int pos) { // obtien le livre bas�e sur la position trouv�e
-		Livre temp = documents[pos];
-		return temp;
-	}
-
-	public int rechercheC(String code) { // effectue uner recherche du livre bas�e sur le code
-		int position = 0;
-		for (int i = 0; i < documents.length; i++) {
-			if (documents[i] != null) {
-				documents[i].getCode();
-				if (code.equals(documents[i].getCode())) {
-					position = i;
-					return position;
-				}
-
-			}
-
-		}
-		return position;
-	}
-
-	public int rechercheN(String nom) { // effectue une recherche du livre bas�e sur le nom
-		int position = 0;
-		for (int i = 0; i < documents.length; i++) {
-			if (documents[i] != null) {
-				String temp = documents[i].getTitre();
-
-				if (nom.equals(temp)) {
-					position = i;
-				}
-			}
-		}
-		return position;
-
 	}
 
 	public void chargement() {
