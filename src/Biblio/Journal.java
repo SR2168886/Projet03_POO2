@@ -1,5 +1,5 @@
 package Biblio;
 
-public class Journal {
+public class Journal extends Document {
 
 }

@@ -31,8 +31,9 @@ public class Biblio implements Serializable {
 	public void ajout(Document newDocument) {
 		if (documents.size() < MAXDOCUMENTS) { // Pas de generation si on est plein!
 			int longueurTitre = newDocument.getTitre().length();
-			int longueurAnnee = Integer.toString(((Livre)newDocument).getAnnee()).length();
-			String code = CodeGenerator.generateCode(newDocument.getTitre(),((Volume) newDocument).getAuteur(),((Livre)newDocument).getAnnee(),longueurTitre,longueurAnnee);
+			int longueurAnnee = Integer.toString(((Livre) newDocument).getAnnee()).length();
+			String code = CodeGenerator.generateCode(newDocument.getTitre(), ((Volume) newDocument).getAuteur(),
+					((Livre) newDocument).getAnnee(), longueurTitre, longueurAnnee);
 			newDocument.setCode(code);
 			documents.add(newDocument);
 			nbDocuments++;
@@ -54,6 +55,7 @@ public class Biblio implements Serializable {
 				// extraire les donnees
 				StringTokenizer strk = new StringTokenizer(ligne, ";");
 
+				String classe = strk.nextToken();
 				String titre = strk.nextToken();
 				String auteur = strk.nextToken();
 				int nbCopie = Integer.parseInt(strk.nextToken());
@@ -68,7 +70,29 @@ public class Biblio implements Serializable {
 				// l'ajouter au tableau
 				// livres[nb] = p;
 				// nb=Livre.g;
-				ajout(titre, auteur, annee, genre, nbCopie, nbCopieDispo);
+				Document nouveauDocument;
+				switch (classe) {
+				case "Document":
+					nouveauDocument = new Document();
+					ajout(nouveauDocument);
+					break;
+				case "Volume":
+					nouveauDocument = new Volume();
+					ajout(nouveauDocument);
+					break;
+				case "BandeDessinee":
+					nouveauDocument = new BandeDessinee();
+					ajout(nouveauDocument);
+					break;
+				case "Journal":
+					nouveauDocument = new Journal();
+					ajout(nouveauDocument);
+					break;
+				case "Livre":
+					nouveauDocument = new Livre();
+					ajout(nouveauDocument);
+					break;
+				}
 
 			}
 
