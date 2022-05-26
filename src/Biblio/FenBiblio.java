@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -25,8 +24,6 @@ public class FenBiblio extends JFrame {
 	private final JTextField textFieldAuteur = new JTextField();
 	private final JTextField textFieldAnnee = new JTextField();
 	private final JTextField textFieldTotalCopie = new JTextField();
-	private final JRadioButton rdbtnOui = new JRadioButton("Oui");
-	private final JRadioButton rdbtnNon = new JRadioButton("Non");
 	private final JTextPane textPane = new JTextPane();
 	private final JButton btnCharger = new JButton("Charger");
 	private final JButton btnAjouter = new JButton("Ajouter");
@@ -43,7 +40,13 @@ public class FenBiblio extends JFrame {
 	private final JLabel lblNewLabel_3 = new JLabel("Total copie:");
 	private final JLabel lblNewLabel_4 = new JLabel("Code");
 	private final JLabel lblNewLabel_5 = new JLabel("Genre");
-	private final JLabel lblNewLabel_6 = new JLabel("Disponible:");
+	private final JRadioButton rdbtnLivre = new JRadioButton("Livre");
+	private final JRadioButton rdbtnBD = new JRadioButton("BandeDessin\u00E9e");
+	private final JRadioButton rdbtnJournal = new JRadioButton("Journal");
+	private final JTextField textFieldDate = new JTextField();
+	private final JTextField textFieldNEdition = new JTextField();
+	private final JLabel lblNewLabel_7 = new JLabel("Date");
+	private final JLabel lblNewLabel_8 = new JLabel("numero D'\u00E9dition");
 
 	/**
 	 * Launch the application.
@@ -66,6 +69,10 @@ public class FenBiblio extends JFrame {
 	 * Create the frame.
 	 */
 	public FenBiblio() {
+		textFieldNEdition.setBounds(644, 123, 112, 20);
+		textFieldNEdition.setColumns(10);
+		textFieldDate.setBounds(646, 75, 110, 20);
+		textFieldDate.setColumns(10);
 		textFieldTotalCopie.setBounds(94, 137, 86, 20);
 		textFieldTotalCopie.setColumns(10);
 		textFieldAnnee.setBounds(66, 106, 102, 20);
@@ -91,13 +98,7 @@ public class FenBiblio extends JFrame {
 		contentPane.add(textFieldAnnee);
 
 		contentPane.add(textFieldTotalCopie);
-		rdbtnOui.setBounds(66, 177, 41, 23);
-
-		contentPane.add(rdbtnOui);
-		rdbtnNon.setBounds(135, 177, 45, 23);
-
-		contentPane.add(rdbtnNon);
-		textPane.setBounds(10, 256, 711, 145);
+		textPane.setBounds(22, 256, 711, 145);
 
 		contentPane.add(textPane);
 		btnCharger.addActionListener(new BtnChargerActionListener());
@@ -132,7 +133,7 @@ public class FenBiblio extends JFrame {
 		btnquitter.setBounds(635, 11, 86, 32);
 
 		contentPane.add(btnquitter);
-		comboBoxGenre.setBounds(313, 105, 136, 22);
+		comboBoxGenre.setBounds(286, 122, 136, 22);
 		comboBoxGenre.addItem("Roman");
 		comboBoxGenre.addItem("Fiction");
 		comboBoxGenre.addItem("technique");
@@ -157,50 +158,73 @@ public class FenBiblio extends JFrame {
 		lblNewLabel_5.setBounds(255, 109, 46, 14);
 
 		contentPane.add(lblNewLabel_5);
-		lblNewLabel_6.setBounds(0, 181, 60, 14);
+		rdbtnLivre.setBounds(477, 74, 109, 23);
 
-		contentPane.add(lblNewLabel_6);
+		contentPane.add(rdbtnLivre);
+		rdbtnBD.setBounds(477, 105, 109, 23);
+
+		contentPane.add(rdbtnBD);
+		rdbtnJournal.setBounds(477, 140, 109, 23);
+
+		contentPane.add(rdbtnJournal);
+
+		contentPane.add(textFieldDate);
+
+		contentPane.add(textFieldNEdition);
+		lblNewLabel_7.setBounds(592, 78, 60, 14);
+
+		contentPane.add(lblNewLabel_7);
+		lblNewLabel_8.setBounds(532, 126, 102, 14);
+
+		contentPane.add(lblNewLabel_8);
 	}
 	private class BtnAjouterActionListener implements ActionListener {  //ajouter un livre
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			int annee= Integer.parseInt(textFieldAnnee.getText());
 			int totalCopie = Integer.parseInt(textFieldTotalCopie.getText());
+			int Nedition =  Integer.parseInt(textFieldNEdition.getText());
+			Document dc =  new Document();
+			if(rdbtnLivre.isSelected()) {
+				dc = new Livre(textFieldTitre.getText(),textFieldAuteur.getText(),annee,comboBoxGenre.toString(),totalCopie);
+			}
+			if(rdbtnBD.isSelected()) {
 
-			b.ajout(textFieldTitre.getText(), textFieldAuteur.getText(),
-					annee,comboBoxGenre.getSelectedItem().toString(),
-					totalCopie, totalCopie);
-			comboBoxCode.addItem(b.livres[b.getNbLivre()-1].getCode());
+				dc = new BandeDessinee(textFieldTitre.getText(),textFieldAuteur.getText(),Nedition);
+			}
+			if(rdbtnJournal.isSelected()) {
+
+			}
+
+
+
+			b.ajout(dc);
+			comboBoxCode.addItem(dc.toString());
 			textPane.setText(b.toString());
 		}
 	}
 	private class BtnSupprimerActionListener implements ActionListener {   //boutons qui supprime le livre associé au code sélectionné
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			b.supression(comboBoxCode.getSelectedItem().toString());
+			b.supression(comboBoxCode.getSelectedIndex());
 			comboBoxCode.remove(comboBoxCode.getSelectedIndex());
 		}
 	}
 	private class BtnEmprunterActionListener implements ActionListener { //diminue le nombre de livre dispo de 1
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(rdbtnOui.isSelected()) {
-				b.pret(comboBoxCode.getSelectedItem().toString());
-			}
+			String messsage=b.pret(comboBoxCode.getSelectedIndex());
+			textPane.setText(messsage);
 
-			if (rdbtnNon.isSelected()) {
-				JOptionPane.showMessageDialog(rootPane, "Livre non dispo");;
-			}
+
 
 		}
-
 	}
-
 	private class BtnRetournerActionListener implements ActionListener { //augmente livre de dispo de 1
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			b.retour(comboBoxCode.getSelectedItem().toString());
+			String message =b.retourner(comboBoxCode.getSelectedIndex());
+			textPane.setText(message);
 		}
 	}
 	private class BtnChercherActionListener implements ActionListener {  //btn qui cherche par le nom et retourne le string de livre
@@ -236,11 +260,12 @@ public class FenBiblio extends JFrame {
 	}
 	public void remplirCombo() {
 		comboBoxCode.removeAllItems();
-		for(Livre l : b.getLivres()) {
-			if(l!=null) {
-				comboBoxCode.addItem(l.getCode());
+		for( Document dc :b.documents) {
+			if(dc!=null) {
+				comboBoxCode.addItem(dc.getCode());
 			}
 		}
 
 	}
 }
+

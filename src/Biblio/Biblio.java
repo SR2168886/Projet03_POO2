@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import ressourceExterne.CodeGenerator;
 
 public class Biblio implements Serializable {
 
 	int MAXDOCUMENTS = 500;
 	String nom;
-	ArrayList documents = new ArrayList();
+	ArrayList <Document> documents = new ArrayList();
 	int nbDocuments;
 
 	public Biblio() {
@@ -30,12 +33,49 @@ public class Biblio implements Serializable {
 
 	public void ajout(Document newDocument) {
 		if (documents.size() < MAXDOCUMENTS) { // Pas de generation si on est plein!
-			int longueurTitre = newDocument.getTitre().length();
-			int longueurAnnee = Integer.toString(((Livre)newDocument).getAnnee()).length();
-			String code = CodeGenerator.generateCode(newDocument.getTitre(),((Volume) newDocument).getAuteur(),((Livre)newDocument).getAnnee(),longueurTitre,longueurAnnee);
-			newDocument.setCode(code);
+			int longueurTitre = 5;
+			int longueurAnnee = 2;
+			if(newDocument instanceof Livre) {
+
+				String code = CodeGenerator.generateCode(newDocument.getTitre(),((Volume) newDocument).getAuteur(),((Livre)newDocument).getAnnee(),longueurTitre,longueurAnnee);
+				newDocument.setCode(code);
+			}
+			if(newDocument instanceof BandeDessinee) {
+				String code = CodeGenerator.generateCode(newDocument.getTitre(),((Volume) newDocument).getAuteur(),((BandeDessinee)newDocument).numEdition,longueurTitre,longueurAnnee);
+				newDocument.setCode(code);
+			}
+			if(newDocument instanceof Journal) {
+				String code = CodeGenerator.generateCode(newDocument.getTitre(),((Journal) newDocument).getParution(),0,longueurTitre,longueurAnnee);
+			}
+
+
+
 			documents.add(newDocument);
 			nbDocuments++;
+
+		}
+	}
+
+	public void supression(int index) {
+		documents.remove(index);
+	}
+
+	public String pret(int index) {
+		if(documents.get(index)instanceof Livre) {
+			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()-1);
+			return "prêt: \t"+ ((Livre)documents.get(index)).toString();
+		}
+		else {
+			return "Le document ne peut être emprunter";
+		}
+	}
+	public String retourner(int index) {
+		if(documents.get(index)instanceof Livre) {
+			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()+1);
+			return "retour: \t"+ ((Livre)documents.get(index)).toString();
+		}
+		else {
+			return "Le document ne peut être retourner";
 		}
 	}
 
@@ -68,7 +108,8 @@ public class Biblio implements Serializable {
 				// l'ajouter au tableau
 				// livres[nb] = p;
 				// nb=Livre.g;
-				ajout(titre, auteur, annee, genre, nbCopie, nbCopieDispo);
+
+
 
 			}
 
@@ -85,13 +126,25 @@ public class Biblio implements Serializable {
 	}
 
 	public void Sauvegarde() throws IOException {
-		String path = "./MesRessource/Livre.json";
+		String path = "./Ressource/Document.json";
 		try (Writer out = new FileWriter(path);) {
 
-			// Gson gs = new GsonBuilder().setPrettyPrinting().create();
+			Gson js = new
 
-			// gs.toJson(livres, out);
+					GsonBuilder().setPrettyPrinting().create();
+
+			js.toJson(documents, out);
 		}
+	}
+
+	@Override
+	public String toString() {
+		String message = "Liste triée des documents : \n ";
+		for (Document each: documents ) {
+			message += each.toString();
+
+		}
+		return message;
 	}
 
 	public int getMAXDOCUMENTS() {

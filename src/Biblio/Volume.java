@@ -23,6 +23,6 @@ public class Volume extends Document {
 
 	@Override
 	public String toString() {
-		return code + ",\t" + titre + ",\t" + auteur;
+		return "Volume:"+"\t"+code + ",\t" + titre + ",\t" + auteur;
 	}
 }
