@@ -26,6 +26,6 @@ public class BandeDessinee extends Volume {
 
 	@Override
 	public String toString() {
-		return code + ",\t" + titre + ",\t" + auteur + ",\t" + numEdition;
+		return "BD: "+ "\t"+code + ",\t" + titre + ",\t" + auteur + ",\t" + numEdition;
 	}
 }

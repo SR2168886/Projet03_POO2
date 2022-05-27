@@ -19,7 +19,7 @@ public class Livre extends Volume {
 		setNbCopieDispo(0);
 	}
 
-	public Livre(String auteur, String titre, int annee, String genre, int nbcopie) {
+	public Livre(String titre,String auteur, int annee, String genre, int nbcopie) {
 		setAuteur(auteur);
 		setTitre(titre);
 		setAnnee(annee);
@@ -62,8 +62,8 @@ public class Livre extends Volume {
 
 	@Override
 	public String toString() {
-		String message = "Livre" + "\t" + getCode() + "\t" + getTitre() + "\t" + getAuteur() + "\t" + genre + "\t"
-				+ getNbCopie() + "\t" + getNbCopieDispo();
+		String message = "Livre:" + "\t" + getCode() + "\t" + getTitre() + "\t" + getAuteur() + "\t" + genre + "\t"
+				+ getNbCopieDispo()+"/"	+ getNbCopie() ;
 		return message;
 	}
 

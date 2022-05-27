@@ -31,7 +31,7 @@ public class Document {
 
 	@Override
 	public String toString() {
-		String affichage = code + ",\t" + titre;
+		String affichage = "document"+"\t"+code + ",\t" + titre;
 		return affichage;
 	}
 
