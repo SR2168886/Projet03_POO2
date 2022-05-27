@@ -1,20 +1,15 @@
 package Biblio;
 
 public class Journal extends Document {
-<<<<<<< HEAD
-=======
 
 	String Parution;
 
-
-
-	Journal(){
+	Journal() {
 		setTitre("aucun titre");
-
 
 	}
 
-	Journal(String titre,String code,String parution){
+	Journal(String titre, String code, String parution) {
 		setTitre(titre);
 		Parution = parution;
 		setCode(code);
@@ -22,8 +17,9 @@ public class Journal extends Document {
 
 	@Override
 	public String toString() {
-		return "Journal:\t"+getCode()+"\t"+getTitre()+"\t"+Parution;
+		return "Journal:\t" + getCode() + "\t" + getTitre() + "\t" + Parution;
 	}
+
 	public String getParution() {
 		return Parution;
 	}
@@ -32,6 +28,5 @@ public class Journal extends Document {
 		Parution = parution;
 
 	}
->>>>>>> branch 'main' of https://github.com/SR2168886/Projet03_POO2.git
 
 }

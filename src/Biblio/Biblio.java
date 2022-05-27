@@ -20,7 +20,7 @@ public class Biblio implements Serializable {
 
 	int MAXDOCUMENTS = 500;
 	String nom;
-	ArrayList <Document> documents = new ArrayList();
+	ArrayList<Document> documents = new ArrayList();
 	int nbDocuments;
 
 	public Biblio() {
@@ -69,22 +69,19 @@ public class Biblio implements Serializable {
 	}
 
 	public String pret(int index) {
-		if(documents.get(index)instanceof Livre) {
-			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()-1);
-			return "prêt: \t"+ ((Livre)documents.get(index)).toString();
+		if (documents.get(index) instanceof Livre) {
+			((Livre) documents.get(index)).setNbCopieDispo(((Livre) documents.get(index)).getNbCopieDispo() - 1);
+			return "prï¿½t: \t" + ((Livre) documents.get(index)).toString();
 		}
-		else {
-			return "Le document ne peut être emprunter";
-		}
+		return "Le document ne peut ï¿½tre emprunter";
 	}
+
 	public String retourner(int index) {
-		if(documents.get(index)instanceof Livre) {
-			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()+1);
-			return "retour: \t"+ ((Livre)documents.get(index)).toString();
+		if (documents.get(index) instanceof Livre) {
+			((Livre) documents.get(index)).setNbCopieDispo(((Livre) documents.get(index)).getNbCopieDispo() + 1);
+			return "retour: \t" + ((Livre) documents.get(index)).toString();
 		}
-		else {
-			return "Le document ne peut être retourner";
-		}
+		return "Le document ne peut ï¿½tre retourner";
 	}
 
 	public void chargement() {
@@ -117,7 +114,6 @@ public class Biblio implements Serializable {
 				// l'ajouter au tableau
 				// livres[nb] = p;
 				// nb=Livre.g;
-<<<<<<< HEAD
 				Document nouveauDocument;
 				switch (classe) {
 				case "Document":
@@ -141,11 +137,6 @@ public class Biblio implements Serializable {
 					ajout(nouveauDocument);
 					break;
 				}
-=======
-
-
->>>>>>> branch 'main' of https://github.com/SR2168886/Projet03_POO2.git
-
 			}
 
 			br.close();
@@ -166,7 +157,7 @@ public class Biblio implements Serializable {
 
 			Gson js = new
 
-					GsonBuilder().setPrettyPrinting().create();
+			GsonBuilder().setPrettyPrinting().create();
 
 			js.toJson(documents, out);
 		}
@@ -174,8 +165,8 @@ public class Biblio implements Serializable {
 
 	@Override
 	public String toString() {
-		String message = "Liste triée des documents : \n ";
-		for (Document each: documents ) {
+		String message = "Liste triï¿½e des documents : \n ";
+		for (Document each : documents) {
 			message += each.toString();
 
 		}
