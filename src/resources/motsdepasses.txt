@@ -1,2 +1,2 @@
-egg	,2004
-test	,halo3
+user	,password
+utilisateur	,motdepasse
