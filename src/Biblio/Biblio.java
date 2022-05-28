@@ -1,15 +1,13 @@
 package Biblio;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,10 +15,10 @@ import com.google.gson.GsonBuilder;
 import ressourceExterne.CodeGenerator;
 
 public class Biblio implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	int MAXDOCUMENTS = 500;
 	String nom;
-	ArrayList <Document> documents = new ArrayList();
+	ArrayList<Document> documents = new ArrayList<Document>();
 	int nbDocuments;
 
 	public Biblio() {
@@ -33,31 +31,25 @@ public class Biblio implements Serializable {
 
 	public void ajout(Document newDocument) {
 		if (documents.size() < MAXDOCUMENTS) { // Pas de generation si on est plein!
-<<<<<<< HEAD
 			int longueurTitre = newDocument.getTitre().length();
 			int longueurAnnee = Integer.toString(((Livre) newDocument).getAnnee()).length();
 			String code = CodeGenerator.generateCode(newDocument.getTitre(), ((Volume) newDocument).getAuteur(),
 					((Livre) newDocument).getAnnee(), longueurTitre, longueurAnnee);
+			longueurTitre = 5;
+			longueurAnnee = 2;
+			if (newDocument instanceof Livre) {
+				code = CodeGenerator.generateCode(newDocument.getTitre(), ((Volume) newDocument).getAuteur(),
+						((Livre) newDocument).getAnnee(), longueurTitre, longueurAnnee);
+			}
+			if (newDocument instanceof BandeDessinee) {
+				code = CodeGenerator.generateCode(newDocument.getTitre(), ((Volume) newDocument).getAuteur(),
+						((BandeDessinee) newDocument).numEdition, longueurTitre, longueurAnnee);
+			}
+			if (newDocument instanceof Journal) {
+				code = CodeGenerator.generateCode(newDocument.getTitre(), ((Journal) newDocument).getParution(), 0,
+						longueurTitre, longueurAnnee);
+			}
 			newDocument.setCode(code);
-=======
-			int longueurTitre = 5;
-			int longueurAnnee = 2;
-			if(newDocument instanceof Livre) {
-
-				String code = CodeGenerator.generateCode(newDocument.getTitre(),((Volume) newDocument).getAuteur(),((Livre)newDocument).getAnnee(),longueurTitre,longueurAnnee);
-				newDocument.setCode(code);
-			}
-			if(newDocument instanceof BandeDessinee) {
-				String code = CodeGenerator.generateCode(newDocument.getTitre(),((Volume) newDocument).getAuteur(),((BandeDessinee)newDocument).numEdition,longueurTitre,longueurAnnee);
-				newDocument.setCode(code);
-			}
-			if(newDocument instanceof Journal) {
-				String code = CodeGenerator.generateCode(newDocument.getTitre(),((Journal) newDocument).getParution(),0,longueurTitre,longueurAnnee);
-			}
-
-
-
->>>>>>> branch 'main' of https://github.com/SR2168886/Projet03_POO2.git
 			documents.add(newDocument);
 			nbDocuments++;
 
@@ -69,109 +61,60 @@ public class Biblio implements Serializable {
 	}
 
 	public String pret(int index) {
-		if(documents.get(index)instanceof Livre) {
-			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()-1);
-			return "pr�t: \t"+ ((Livre)documents.get(index)).toString();
+		if (documents.get(index) instanceof Livre) {
+			((Livre) documents.get(index)).setNbCopieDispo(((Livre) documents.get(index)).getNbCopieDispo() - 1);
+			return "pret: \t" + ((Livre) documents.get(index)).toString();
 		}
-		else {
-			return "Le document ne peut �tre emprunter";
-		}
+		return "Le document ne peut etre emprunter";
 	}
+
 	public String retourner(int index) {
-		if(documents.get(index)instanceof Livre) {
-			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()+1);
-			return "retour: \t"+ ((Livre)documents.get(index)).toString();
+		if (documents.get(index) instanceof Livre) {
+			((Livre) documents.get(index)).setNbCopieDispo(((Livre) documents.get(index)).getNbCopieDispo() + 1);
+			return "retour: \t" + ((Livre) documents.get(index)).toString();
 		}
-		else {
-			return "Le document ne peut �tre retourner";
-		}
+		return "Le document ne peut etre retourner";
 	}
 
-	public void chargement() {
-		String path = "./MesRessource/Livre.txt";
-		String ligne = null;
+	public Document rechercheCode(String code) {
+		for (Document d : documents) {
+			if (d.getCode() == code)
+				return d;
+		}
+		return null;
+	}
 
-		int nb = 0; // compteur de personnes
-		try // try with
-		(FileReader fr = new FileReader(path); BufferedReader br = new BufferedReader(fr);) {
+	public Document rechercheTitre(String titre) {
+		for (Document d : documents) {
+			if (d.getTitre() == titre)
+				return d;
+		}
+		return null;
+	}
 
-			while (br.ready() && (nb < documents.size())) {
-				// lire une ligne
-				ligne = br.readLine();
-
-				// extraire les donnees
-				StringTokenizer strk = new StringTokenizer(ligne, ";");
-
-				String classe = strk.nextToken();
-				String titre = strk.nextToken();
-				String auteur = strk.nextToken();
-				int nbCopie = Integer.parseInt(strk.nextToken());
-				int nbCopieDispo = Integer.parseInt(strk.nextToken());
-				int annee = Integer.parseInt(strk.nextToken());
-				String genre = strk.nextToken();
-
-				// instancier Livre
-				// Livre p = new Livre (auteur,titre,annee, genre, nbCopie);
-				// p.setNbCopieDispo(nbcopiedispo);
-
-				// l'ajouter au tableau
-				// livres[nb] = p;
-				// nb=Livre.g;
-				Document nouveauDocument;
-				switch (classe) {
-				case "Document":
-					nouveauDocument = new Document();
-					ajout(nouveauDocument);
-					break;
-				case "Volume":
-					nouveauDocument = new Volume();
-					ajout(nouveauDocument);
-					break;
-				case "BandeDessinee":
-					nouveauDocument = new BandeDessinee();
-					ajout(nouveauDocument);
-					break;
-				case "Journal":
-					nouveauDocument = new Journal();
-					ajout(nouveauDocument);
-					break;
-				case "Livre":
-					nouveauDocument = new Livre();
-					ajout(nouveauDocument);
-					break;
-				}
-			}
-
-			br.close();
-		} catch (NumberFormatException e) {
-			System.out.println("Erreur d'age");
-		} catch (FileNotFoundException e) {
-			System.out.println("Erreur : fichier non trouve");
-		} catch (IOException e) {
-			System.out.println("Erreur de lecture du fichier");
-		} catch (NoSuchElementException e) {
-			System.out.println("\nErreur de donnees du fichier : impossible de parser la ligne");
+	public void chargement() throws FileNotFoundException, IOException {
+		String path = "./src/resources/Document.json";
+		Gson js = new GsonBuilder().setPrettyPrinting().create();
+		try (Reader in = new FileReader(path);) {
+			documents = js.fromJson(path, ArrayList.class);
+		} catch (NumberFormatException | IOException e) {
+			System.out.println("Type d'erreur: " + e.getMessage());
 		}
 	}
 
 	public void Sauvegarde() throws IOException {
-		String path = "./Ressource/Document.json";
+		String path = "./src/resources/Document.json";
+		Gson js = new GsonBuilder().setPrettyPrinting().create();
 		try (Writer out = new FileWriter(path);) {
-
-			Gson js = new
-
-					GsonBuilder().setPrettyPrinting().create();
-
-			js.toJson(documents, out);
+			js.toJson(toString(), out);
 		}
 	}
 
 	@Override
 	public String toString() {
-		String message = "Liste tri�e des documents : \n ";
-		for (Document each: documents ) {
-			message += each.toString();
-
+		String message = "Liste triee des documents : \n";
+		for (Document each : documents) {
+			message += each.toString() + "\n";
 		}
 		return message;
 	}

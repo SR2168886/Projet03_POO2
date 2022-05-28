@@ -3,6 +3,8 @@ package Biblio;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,8 +15,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
-
-
 
 public class FenBiblio extends JFrame {
 	Biblio b = new Biblio();
@@ -32,7 +32,7 @@ public class FenBiblio extends JFrame {
 	private final JButton btnRetourner = new JButton("Retourner");
 	private final JButton btnTrier = new JButton("Trier");
 	private final JButton btnChercher = new JButton("Chercher");
-	private final JButton btnquitter = new JButton("quitter ");
+	private final JButton btnquitter = new JButton("Quitter ");
 	private final JComboBox comboBoxGenre = new JComboBox();
 	private final JLabel lblNewLabel = new JLabel("Titre");
 	private final JLabel lblNewLabel_1 = new JLabel("Auteur");
@@ -41,7 +41,7 @@ public class FenBiblio extends JFrame {
 	private final JLabel lblNewLabel_4 = new JLabel("Code");
 	private final JLabel lblNewLabel_5 = new JLabel("Genre");
 	private final JRadioButton rdbtnLivre = new JRadioButton("Livre");
-	private final JRadioButton rdbtnBD = new JRadioButton("BandeDessin\u00E9e");
+	private final JRadioButton rdbtnBD = new JRadioButton("Bande DessinÃ©e");
 	private final JRadioButton rdbtnJournal = new JRadioButton("Journal");
 	private final JTextField textFieldDate = new JTextField();
 	private final JTextField textFieldNEdition = new JTextField();
@@ -126,7 +126,7 @@ public class FenBiblio extends JFrame {
 
 		contentPane.add(btnTrier);
 		btnChercher.addActionListener(new BtnChercherActionListener());
-		btnChercher.setBounds(477, 38, 80, 32);
+		btnChercher.setBounds(477, 38, 109, 32);
 
 		contentPane.add(btnChercher);
 		btnquitter.addActionListener(new BtnquitterActionListener());
@@ -178,94 +178,114 @@ public class FenBiblio extends JFrame {
 
 		contentPane.add(lblNewLabel_8);
 	}
-	private class BtnAjouterActionListener implements ActionListener {  //ajouter un livre
+
+	private class BtnAjouterActionListener implements ActionListener { // ajouter un livre
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int annee= Integer.parseInt(textFieldAnnee.getText());
+			int annee = Integer.parseInt(textFieldAnnee.getText());
 			int totalCopie = Integer.parseInt(textFieldTotalCopie.getText());
-			int Nedition =  Integer.parseInt(textFieldNEdition.getText());
-			Document dc =  new Document();
-			if(rdbtnLivre.isSelected()) {
-				dc = new Livre(textFieldTitre.getText(),textFieldAuteur.getText(),annee,comboBoxGenre.toString(),totalCopie);
+			int Nedition = Integer.parseInt(textFieldNEdition.getText());
+			Document dc = new Document();
+			if (rdbtnLivre.isSelected()) {
+				dc = new Livre(textFieldTitre.getText(), textFieldAuteur.getText(), annee, comboBoxGenre.toString(),
+						totalCopie);
 			}
-			if(rdbtnBD.isSelected()) {
-
-				dc = new BandeDessinee(textFieldTitre.getText(),textFieldAuteur.getText(),Nedition);
+			if (rdbtnBD.isSelected()) {
+				dc = new BandeDessinee(textFieldTitre.getText(), textFieldAuteur.getText(), Nedition);
 			}
-			if(rdbtnJournal.isSelected()) {
-
+			if (rdbtnJournal.isSelected()) {
+				dc = new Journal(textFieldTitre.getText(), String.valueOf(annee));
 			}
-
-
 
 			b.ajout(dc);
 			comboBoxCode.addItem(dc.toString());
 			textPane.setText(b.toString());
 		}
 	}
-	private class BtnSupprimerActionListener implements ActionListener {   //boutons qui supprime le livre associé au code sélectionné
+
+	private class BtnSupprimerActionListener implements ActionListener { // boutons qui supprime le livre associï¿½ au
+																			// code sï¿½lectionnï¿½
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			b.supression(comboBoxCode.getSelectedIndex());
 			comboBoxCode.remove(comboBoxCode.getSelectedIndex());
 		}
 	}
-	private class BtnEmprunterActionListener implements ActionListener { //diminue le nombre de livre dispo de 1
+
+	private class BtnEmprunterActionListener implements ActionListener { // diminue le nombre de livre dispo de 1
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String messsage=b.pret(comboBoxCode.getSelectedIndex());
+			String messsage = b.pret(comboBoxCode.getSelectedIndex());
 			textPane.setText(messsage);
-
-
 
 		}
 	}
-	private class BtnRetournerActionListener implements ActionListener { //augmente livre de dispo de 1
+
+	private class BtnRetournerActionListener implements ActionListener { // augmente livre de dispo de 1
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String message =b.retourner(comboBoxCode.getSelectedIndex());
+			String message = b.retourner(comboBoxCode.getSelectedIndex());
 			textPane.setText(message);
 		}
 	}
-	private class BtnChercherActionListener implements ActionListener {  //btn qui cherche par le nom et retourne le string de livre
+
+	private class BtnChercherActionListener implements ActionListener { // btn qui cherche par le nom et retourne le
+																		// string de livre
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			int position=b.rechercheN(textFieldTitre.getText());
-			textPane.setText(b.livres[position].toString());
-
+			if (b.rechercheTitre(textFieldTitre.getText()) != null) {
+				textPane.setText(b.rechercheTitre(textFieldTitre.getText()).toString());
+			}
 		}
 	}
-	private class BtnSauvegarderActionListener implements ActionListener { //btn Trier
+
+	private class BtnSauvegarderActionListener implements ActionListener { // btn Trier
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			textPane.setText(b.toString());
 			remplirCombo();
 		}
 	}
-	private class BtnChargerActionListener implements ActionListener { //btn chargement
+
+	private class BtnChargerActionListener implements ActionListener { // btn chargement
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			b.chargement();
-			remplirCombo();
+			try {
+				b.chargement();
+				remplirCombo();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		}
 	}
-	private class BtnquitterActionListener implements ActionListener {     //boutons quitter
+
+	private class BtnquitterActionListener implements ActionListener { // boutons quitter
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
-
+			try {
+				b.Sauvegarde();
+				FenAuth fa = new FenAuth();
+				fa.setVisible(true);
+				dispose();
+			} catch (IOException e1) {
+				// Oops!
+				e1.printStackTrace();
+			}
 		}
 	}
+
 	public void remplirCombo() {
 		comboBoxCode.removeAllItems();
-		for( Document dc :b.documents) {
-			if(dc!=null) {
+		for (Document dc : b.documents) {
+			if (dc != null) {
 				comboBoxCode.addItem(dc.getCode());
 			}
 		}
 
 	}
 }
-

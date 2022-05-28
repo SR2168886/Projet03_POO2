@@ -2,32 +2,29 @@ package Biblio;
 
 public class Journal extends Document {
 
-	String Parution;
+	String parution;
 
-
-
-	Journal(){
+	Journal() {
 		setTitre("aucun titre");
-
 
 	}
 
-	Journal(String titre,String code,String parution){
+	Journal(String titre, String parution) {
 		setTitre(titre);
-		Parution = parution;
-		setCode(code);
+		setParution(parution);
 	}
 
 	@Override
 	public String toString() {
-		return "Journal:\t"+getCode()+"\t"+getTitre()+"\t"+Parution;
+		return "Journal:\t" + getCode() + "\t" + getTitre() + "\t" + parution;
 	}
+
 	public String getParution() {
-		return Parution;
+		return parution;
 	}
 
 	public void setParution(String parution) {
-		Parution = parution;
+		this.parution = parution;
 
 	}
 
