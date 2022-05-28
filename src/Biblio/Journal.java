@@ -4,12 +4,15 @@ public class Journal extends Document {
 
 	String Parution;
 
-	Journal() {
+
+
+	Journal(){
 		setTitre("aucun titre");
+
 
 	}
 
-	Journal(String titre, String code, String parution) {
+	Journal(String titre,String code,String parution){
 		setTitre(titre);
 		Parution = parution;
 		setCode(code);
@@ -17,9 +20,8 @@ public class Journal extends Document {
 
 	@Override
 	public String toString() {
-		return "Journal:\t" + getCode() + "\t" + getTitre() + "\t" + Parution;
+		return "Journal:\t"+getCode()+"\t"+getTitre()+"\t"+Parution;
 	}
-
 	public String getParution() {
 		return Parution;
 	}

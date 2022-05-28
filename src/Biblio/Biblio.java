@@ -20,7 +20,7 @@ public class Biblio implements Serializable {
 
 	int MAXDOCUMENTS = 500;
 	String nom;
-	ArrayList<Document> documents = new ArrayList();
+	ArrayList <Document> documents = new ArrayList();
 	int nbDocuments;
 
 	public Biblio() {
@@ -69,19 +69,22 @@ public class Biblio implements Serializable {
 	}
 
 	public String pret(int index) {
-		if (documents.get(index) instanceof Livre) {
-			((Livre) documents.get(index)).setNbCopieDispo(((Livre) documents.get(index)).getNbCopieDispo() - 1);
-			return "pr�t: \t" + ((Livre) documents.get(index)).toString();
+		if(documents.get(index)instanceof Livre) {
+			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()-1);
+			return "pr�t: \t"+ ((Livre)documents.get(index)).toString();
 		}
-		return "Le document ne peut �tre emprunter";
+		else {
+			return "Le document ne peut �tre emprunter";
+		}
 	}
-
 	public String retourner(int index) {
-		if (documents.get(index) instanceof Livre) {
-			((Livre) documents.get(index)).setNbCopieDispo(((Livre) documents.get(index)).getNbCopieDispo() + 1);
-			return "retour: \t" + ((Livre) documents.get(index)).toString();
+		if(documents.get(index)instanceof Livre) {
+			((Livre)documents.get(index)).setNbCopieDispo(((Livre)documents.get(index)).getNbCopieDispo()+1);
+			return "retour: \t"+ ((Livre)documents.get(index)).toString();
 		}
-		return "Le document ne peut �tre retourner";
+		else {
+			return "Le document ne peut �tre retourner";
+		}
 	}
 
 	public void chargement() {
@@ -157,7 +160,7 @@ public class Biblio implements Serializable {
 
 			Gson js = new
 
-			GsonBuilder().setPrettyPrinting().create();
+					GsonBuilder().setPrettyPrinting().create();
 
 			js.toJson(documents, out);
 		}
@@ -166,7 +169,7 @@ public class Biblio implements Serializable {
 	@Override
 	public String toString() {
 		String message = "Liste tri�e des documents : \n ";
-		for (Document each : documents) {
+		for (Document each: documents ) {
 			message += each.toString();
 
 		}
